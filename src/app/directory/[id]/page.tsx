@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import { supabase } from '@/utils/supabase'
 import { useParams } from 'next/navigation'
-import Image from 'next/image'
+// import Image from 'next/image' // Commenting out for debugging
 
 export default function EmployeePage() {
   const { id } = useParams()
@@ -37,12 +37,11 @@ export default function EmployeePage() {
         <div className="flex items-center mb-8">
           <div className="w-48 h-48 bg-gray-200 rounded-full overflow-hidden">
             {employee.profile_photo_url ? (
-              <Image
+              // Using a standard img tag for debugging
+              <img
                 src={employee.profile_photo_url}
                 alt={employee.full_name}
-                width={192}
-                height={192}
-                className="object-cover"
+                className="w-full h-full object-cover"
               />
             ) : (
               <div className="w-full h-full bg-gray-300" />

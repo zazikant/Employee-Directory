@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import { supabase } from '@/utils/supabase'
 import Link from 'next/link'
-import Image from 'next/image'
+// import Image from 'next/image' // Commenting out for debugging
 
 export default function DirectoryPage() {
   const [employees, setEmployees] = useState<any[]>([])
@@ -41,12 +41,11 @@ export default function DirectoryPage() {
           <div key={employee.id} className="border rounded-lg p-4 flex flex-col items-center">
             <div className="w-32 h-32 bg-gray-200 rounded-full overflow-hidden">
               {employee.profile_photo_url ? (
-                <Image
+                // Using a standard img tag for debugging
+                <img
                   src={employee.profile_photo_url}
                   alt={employee.full_name}
-                  width={128}
-                  height={128}
-                  className="object-cover"
+                  className="w-full h-full object-cover"
                 />
               ) : (
                 <div className="w-full h-full bg-gray-300" />
