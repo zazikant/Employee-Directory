@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { supabase } from '@/utils/supabase'
 import Link from 'next/link'
+import Image from 'next/image'
 
 export default function DirectoryPage() {
   const [employees, setEmployees] = useState<any[]>([])
@@ -37,13 +38,27 @@ export default function DirectoryPage() {
       />
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {filteredEmployees.map((employee) => (
-          <Link href={`/directory/${employee.id}`} key={employee.id}>
-            <div className="border rounded-lg p-4 cursor-pointer">
-              <h2 className="text-xl font-bold">{employee.full_name}</h2>
-              <p className="text-gray-600">{employee.job_title}</p>
-              <p className="text-gray-600">{employee.department}</p>
+          <div key={employee.id} className="border rounded-lg p-4 flex flex-col items-center">
+            <div className="w-32 h-32 bg-gray-200 rounded-full overflow-hidden">
+              {employee.profile_photo_url ? (
+                <Image
+                  src={employee.profile_photo_url}
+                  alt={employee.full_name}
+                  width={128}
+                  height={128}
+                  className="object-cover"
+                />
+              ) : (
+                <div className="w-full h-full bg-gray-300" />
+              )}
             </div>
-          </Link>
+            <h2 className="text-xl font-bold mt-4">{employee.full_name}</h2>
+            <p className="text-gray-600">{employee.job_title}</p>
+            <p className="text-gray-600">{employee.department}</p>
+            <Link href={`/directory/${employee.id}`} className="mt-4 bg-blue-600 text-white px-4 py-2 rounded">
+              Preview Profile
+            </Link>
+          </div>
         ))}
       </div>
     </div>

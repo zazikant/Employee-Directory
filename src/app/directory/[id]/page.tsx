@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { supabase } from '@/utils/supabase'
 import { useParams } from 'next/navigation'
+import Image from 'next/image'
 
 export default function EmployeePage() {
   const { id } = useParams()
@@ -33,8 +34,25 @@ export default function EmployeePage() {
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="border rounded-lg p-8">
-        <h1 className="text-4xl font-bold mb-4">{employee.full_name}</h1>
-        <p className="text-xl text-gray-600 mb-8">{employee.job_title}</p>
+        <div className="flex items-center mb-8">
+          <div className="w-48 h-48 bg-gray-200 rounded-full overflow-hidden">
+            {employee.profile_photo_url ? (
+              <Image
+                src={employee.profile_photo_url}
+                alt={employee.full_name}
+                width={192}
+                height={192}
+                className="object-cover"
+              />
+            ) : (
+              <div className="w-full h-full bg-gray-300" />
+            )}
+          </div>
+          <div className="ml-8">
+            <h1 className="text-4xl font-bold mb-4">{employee.full_name}</h1>
+            <p className="text-xl text-gray-600">{employee.job_title}</p>
+          </div>
+        </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           <div>
             <h2 className="text-2xl font-bold mb-4">Details</h2>
