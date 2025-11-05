@@ -2,10 +2,12 @@
 
 import { useState } from 'react'
 import { supabase } from '@/utils/supabase'
+import { useRouter } from 'next/navigation'
 
 export default function LoginPage() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const router = useRouter()
 
   const handleLogin = async () => {
     const { error } = await supabase.auth.signInWithPassword({
@@ -16,6 +18,7 @@ export default function LoginPage() {
       alert(error.message)
     } else {
       alert('Logged in successfully!')
+      router.push('/admin')
     }
   }
 
