@@ -1,8 +1,8 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #183319;
+  --background: #183319;
+  --foreground: #ffffff;
   --primary: #fecf07;
   --secondary: #183319;
 }
@@ -14,13 +14,6 @@
   --font-mono: var(--font-geist-mono);
   --color-primary: var(--primary);
   --color-secondary: var(--secondary);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #183319;
-    --foreground: #ffffff;
-  }
 }
 
 body {
