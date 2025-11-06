@@ -4,7 +4,6 @@ import { useState } from 'react'
 import { supabase } from '@/utils/supabase'
 import { useRouter } from 'next/navigation'
 import { Employee } from '@/types'
-import Papa from 'papaparse'
 
 export default function AddEmployeePage() {
   const router = useRouter()
@@ -34,9 +33,10 @@ export default function AddEmployeePage() {
     }
   }
 
-  const handleCsvUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleCsvUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (file) {
+      const Papa = await import('papaparse')
       Papa.parse(file, {
         header: true,
         skipEmptyLines: true,
