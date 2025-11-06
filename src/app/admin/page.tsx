@@ -10,16 +10,6 @@ export default function AdminPage() {
   const [employees, setEmployees] = useState<Employee[]>([])
   const router = useRouter()
 
-  useEffect(() => {
-    const checkUser = async () => {
-      const { data: { user } } = await supabase.auth.getUser()
-      if (!user) {
-        router.push('/login')
-      }
-    }
-    checkUser()
-  }, [router])
-
   const fetchEmployees = useCallback(async () => {
     const { data, error } = await supabase.from('employees').select('*')
     if (error) {
@@ -30,8 +20,16 @@ export default function AdminPage() {
   }, [])
 
   useEffect(() => {
-    fetchEmployees()
-  }, [fetchEmployees])
+    const checkUser = async () => {
+      const { data: { user } } = await supabase.auth.getUser()
+      if (!user) {
+        router.push('/login')
+      } else {
+        fetchEmployees()
+      }
+    }
+    checkUser()
+  }, [router, fetchEmployees])
 
   const handleDelete = async (id: string) => {
     if (window.confirm('Are you sure you want to delete this employee?')) {
