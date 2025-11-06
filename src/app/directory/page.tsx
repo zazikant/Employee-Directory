@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { supabase } from '@/utils/supabase'
 import EmployeeCard from '@/components/EmployeeCard'
 import { Employee } from '@/types'
+import Image from 'next/image'
 
 const fuzzyMatch = (searchTerm: string, text: string) => {
   searchTerm = searchTerm.toLowerCase();
@@ -39,7 +40,14 @@ export default function DirectoryPage() {
   })
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="container mx-auto px-4 py-8 text-center">
+      <Image
+        src="https://gemengserv.com/wp-content/uploads/2021/04/GEM-Engserv-Pvt-Ltd-logo-updated.png"
+        alt="GEM Engserv Pvt Ltd Logo"
+        width={300}
+        height={80}
+        className="mx-auto mb-4"
+      />
       <h1 className="text-4xl font-bold mb-8">Employee Directory</h1>
       <input
         type="text"
