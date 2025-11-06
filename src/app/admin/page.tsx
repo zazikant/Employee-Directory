@@ -76,19 +76,17 @@ export default function AdminPage() {
           <thead>
             <tr>
               <th className="py-2 px-4 border-b">Name</th>
-              <th className="py-2 px-4 border-b">Title</th>
               <th className="py-2 px-4 border-b">Department</th>
-              <th className="py-2 px-4 border-b">Status</th>
+              <th className="py-2 px-4 border-b">Tenure in GEM</th>
               <th className="py-2 px-4 border-b">Actions</th>
             </tr>
           </thead>
           <tbody>
             {employees.map((employee) => (
               <tr key={employee.id}>
-                <td className="py-2 px-4 border-b">{employee.full_name}</td>
-                <td className="py-2 px-4 border-b">{employee.job_title}</td>
+                <td className="py-2 px-4 border-b">{employee.name}</td>
                 <td className="py-2 px-4 border-b">{employee.department}</td>
-                <td className="py-2 px-4 border-b">{employee.employment_status}</td>
+                <td className="py-2 px-4 border-b">{employee.tenure_in_gem}</td>
                 <td className="py-2 px-4 border-b">
                   <Link href={`/admin/edit/${employee.id}`}>
                     <button className="text-blue-600 mr-4">Edit</button>

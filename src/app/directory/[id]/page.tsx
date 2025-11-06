@@ -36,11 +36,11 @@ export default function EmployeePage() {
       <div className="border rounded-lg p-8">
         <div className="flex items-center mb-8">
           <div className="w-48 h-48 bg-gray-200 rounded-full overflow-hidden">
-            {employee.profile_photo_url ? (
+            {employee.photo_url ? (
               // Using a standard img tag for debugging
               <img
-                src={employee.profile_photo_url}
-                alt={employee.full_name}
+                src={employee.photo_url}
+                alt={employee.name}
                 className="w-full h-full object-cover"
               />
             ) : (
@@ -48,51 +48,19 @@ export default function EmployeePage() {
             )}
           </div>
           <div className="ml-8">
-            <h1 className="text-4xl font-bold mb-4">{employee.full_name}</h1>
-            <p className="text-xl text-gray-600">{employee.job_title}</p>
+            <h1 className="text-4xl font-bold mb-4">{employee.name}</h1>
+            <p className="text-xl text-gray-600">{employee.department}</p>
+            <p className="text-xl text-gray-600">Tenure: {employee.tenure_in_gem} years</p>
           </div>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           <div>
-            <h2 className="text-2xl font-bold mb-4">Details</h2>
-            <p><strong>Department:</strong> {employee.department}</p>
-            <p><strong>Status:</strong> {employee.employment_status}</p>
-            <p><strong>Employee ID:</strong> {employee.employee_id}</p>
-            <p><strong>Start Date:</strong> {employee.start_date}</p>
-            {employee.end_date && <p><strong>End Date:</strong> {employee.end_date}</p>}
-            <p><strong>Office Location:</strong> {employee.office_location}</p>
-            <p><strong>Reporting Manager:</strong> {employee.reporting_manager}</p>
+            <h2 className="text-2xl font-bold mb-4">Hobbies</h2>
+            <p>{employee.hobbies}</p>
           </div>
           <div>
-            <h2 className="text-2xl font-bold mb-4">Contact</h2>
-            <p><strong>Email:</strong> {employee.email}</p>
-            <p><strong>Phone:</strong> {employee.phone}</p>
-            <p><strong>LinkedIn:</strong> <a href={employee.linkedin_url} target="_blank" rel="noreferrer">{employee.linkedin_url}</a></p>
-            <p><strong>Website:</strong> <a href={employee.website_url} target="_blank" rel="noreferrer">{employee.website_url}</a></p>
-          </div>
-        </div>
-        <div className="mt-8">
-          <h2 className="text-2xl font-bold mb-4">Bio</h2>
-          <p>{employee.bio}</p>
-        </div>
-        <div className="mt-8">
-          <h2 className="text-2xl font-bold mb-4">Skills</h2>
-          <div className="flex flex-wrap gap-2">
-            {employee.skills?.map((skill: string) => (
-              <span key={skill} className="bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700">
-                {skill}
-              </span>
-            ))}
-          </div>
-        </div>
-        <div className="mt-8">
-          <h2 className="text-2xl font-bold mb-4">Projects</h2>
-          <div className="flex flex-wrap gap-2">
-            {employee.projects?.map((project: string) => (
-              <span key={project} className="bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700">
-                {project}
-              </span>
-            ))}
+            <h2 className="text-2xl font-bold mb-4">Personal Traits</h2>
+            <p>{employee.personal_traits}</p>
           </div>
         </div>
       </div>

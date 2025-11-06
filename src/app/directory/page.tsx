@@ -22,7 +22,7 @@ export default function DirectoryPage() {
   }, [])
 
   const filteredEmployees = employees.filter((employee) => {
-    const searchContent = `${employee.full_name} ${employee.job_title} ${employee.department}`.toLowerCase()
+    const searchContent = `${employee.name} ${employee.department} ${employee.hobbies}`.toLowerCase()
     return searchContent.includes(searchTerm.toLowerCase())
   })
 
@@ -40,20 +40,20 @@ export default function DirectoryPage() {
         {filteredEmployees.map((employee) => (
           <div key={employee.id} className="border rounded-lg p-4 flex flex-col items-center">
             <div className="w-32 h-32 bg-gray-200 rounded-full overflow-hidden">
-              {employee.profile_photo_url ? (
+              {employee.photo_url ? (
                 // Using a standard img tag for debugging
                 <img
-                  src={employee.profile_photo_url}
-                  alt={employee.full_name}
+                  src={employee.photo_url}
+                  alt={employee.name}
                   className="w-full h-full object-cover"
                 />
               ) : (
                 <div className="w-full h-full bg-gray-300" />
               )}
             </div>
-            <h2 className="text-xl font-bold mt-4">{employee.full_name}</h2>
-            <p className="text-gray-600">{employee.job_title}</p>
+            <h2 className="text-xl font-bold mt-4">{employee.name}</h2>
             <p className="text-gray-600">{employee.department}</p>
+            <p className="text-gray-600">Tenure: {employee.tenure_in_gem} years</p>
             <Link href={`/directory/${employee.id}`} className="mt-4 bg-blue-600 text-white px-4 py-2 rounded">
               Preview Profile
             </Link>

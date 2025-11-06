@@ -33,11 +33,6 @@ export default function EditEmployeePage() {
     setEmployee({ ...employee, [name]: value })
   }
 
-  const handleArrayChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target
-    setEmployee({ ...employee, [name]: value.split(',') })
-  }
-
   const handlePhotoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     try {
       setUploading(true)
@@ -57,7 +52,7 @@ export default function EditEmployeePage() {
       }
 
       const { data: { publicUrl } } = supabase.storage.from('profile-photos').getPublicUrl(filePath)
-      setEmployee({ ...employee, profile_photo_url: publicUrl })
+      setEmployee({ ...employee, photo_url: publicUrl })
     } catch (error: any) {
       alert(error.message)
     } finally {
@@ -88,26 +83,11 @@ export default function EditEmployeePage() {
           <label htmlFor="photo">Profile Photo</label>
           <input id="photo" type="file" accept="image/*" onChange={handlePhotoUpload} disabled={uploading} className="p-2 border rounded" />
         </div>
-        <input name="full_name" placeholder="Full Name" value={employee.full_name} onChange={handleChange} required className="p-2 border rounded" />
-        <input name="job_title" placeholder="Job Title" value={employee.job_title} onChange={handleChange} required className="p-2 border rounded" />
+        <input name="name" placeholder="Name" value={employee.name} onChange={handleChange} required className="p-2 border rounded" />
+        <input name="hobbies" placeholder="Hobbies" value={employee.hobbies} onChange={handleChange} required className="p-2 border rounded" />
+        <input name="tenure_in_gem" type="number" placeholder="Tenure in GEM" value={employee.tenure_in_gem} onChange={handleChange} required className="p-2 border rounded" />
         <input name="department" placeholder="Department" value={employee.department} onChange={handleChange} required className="p-2 border rounded" />
-        <select name="employment_status" onChange={handleChange} value={employee.employment_status} className="p-2 border rounded">
-          <option value="current">Current</option>
-          <option value="former">Former</option>
-        </select>
-        <input name="employee_id" placeholder="Employee ID" value={employee.employee_id} onChange={handleChange} required className="p-2 border rounded" />
-        <input name="start_date" type="date" placeholder="Start Date" value={employee.start_date} onChange={handleChange} required className="p-2 border rounded" />
-        <input name="end_date" type="date" placeholder="End Date" value={employee.end_date} onChange={handleChange} className="p-2 border rounded" />
-        <input name="office_location" placeholder="Office Location" value={employee.office_location} onChange={handleChange} className="p-2 border rounded" />
-        <input name="reporting_manager" placeholder="Reporting Manager" value={employee.reporting_manager} onChange={handleChange} className="p-2 border rounded" />
-        <input name="email" type="email" placeholder="Email" value={employee.email} onChange={handleChange} className="p-2 border rounded" />
-        <input name="phone" placeholder="Phone" value={employee.phone} onChange={handleChange} className="p-2 border rounded" />
-        <input name="linkedin_url" placeholder="LinkedIn URL" value={employee.linkedin_url} onChange={handleChange} className="p-2 border rounded" />
-        <input name="website_url" placeholder="Website URL" value={employee.website_url} onChange={handleChange} className="p-2 border rounded" />
-        <textarea name="bio" placeholder="Bio" value={employee.bio} onChange={handleChange} className="p-2 border rounded col-span-2" />
-        <input name="skills" placeholder="Skills (comma-separated)" value={employee.skills?.join(',')} onChange={handleArrayChange} className="p-2 border rounded" />
-        <input name="projects" placeholder="Projects (comma-separated)" value={employee.projects?.join(',')} onChange={handleArrayChange} className="p-2 border rounded" />
-        <input name="achievements" placeholder="Achievements" value={employee.achievements} onChange={handleChange} className="p-2 border rounded" />
+        <textarea name="personal_traits" placeholder="Personal Traits" value={employee.personal_traits} onChange={handleChange} className="p-2 border rounded col-span-2" />
         <button type="submit" className="p-2 text-white bg-blue-600 rounded col-span-2" disabled={uploading}>
           {uploading ? 'Uploading...' : 'Update Employee'}
         </button>
