@@ -5,6 +5,7 @@ import { supabase } from '@/utils/supabase'
 import EmployeeCard from '@/components/EmployeeCard'
 import { Employee } from '@/types'
 import Image from 'next/image'
+import Link from 'next/link'
 
 const fuzzyMatch = (searchTerm: string, text: string) => {
   searchTerm = searchTerm.toLowerCase();
@@ -40,26 +41,31 @@ export default function DirectoryPage() {
   })
 
   return (
-    <div className="container mx-auto px-4 py-8 text-center">
-      <Image
-        src="https://gemengserv.com/wp-content/uploads/2021/04/GEM-Engserv-Pvt-Ltd-logo-updated.png"
-        alt="GEM Engserv Pvt Ltd Logo"
-        width={300}
-        height={80}
-        className="mx-auto mb-4"
-      />
-      <h1 className="text-4xl font-bold mb-8">Employee Directory</h1>
-      <input
-        type="text"
-        placeholder="Search employees..."
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-        className="p-2 mb-8 border rounded w-full"
-      />
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-2">
-        {filteredEmployees.map((employee) => (
-          <EmployeeCard key={employee.id} employee={employee} />
-        ))}
+    <div className="container mx-auto px-4 py-8">
+      <Link href="/" className="mb-8 bg-primary text-black px-4 py-2 rounded inline-block">
+        &larr; Go back to Home
+      </Link>
+      <div className="text-center">
+        <Image
+          src="https://gemengserv.com/wp-content/uploads/2021/04/GEM-Engserv-Pvt-Ltd-logo-updated.png"
+          alt="GEM Engserv Pvt Ltd Logo"
+          width={150}
+          height={40}
+          className="mx-auto mb-4"
+        />
+        <h1 className="text-4xl font-bold mb-8">Employee Directory</h1>
+        <input
+          type="text"
+          placeholder="Search employees..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className="p-2 mb-8 border rounded w-full"
+        />
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-2">
+          {filteredEmployees.map((employee) => (
+            <EmployeeCard key={employee.id} employee={employee} />
+          ))}
+        </div>
       </div>
     </div>
   )
