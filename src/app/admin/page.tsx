@@ -52,8 +52,23 @@ export default function AdminPage() {
     }
   }
 
+  const tenureText = (employee: Employee) => {
+    const years = employee.tenure_years || 0
+    const months = employee.tenure_months || 0
+    if (years > 0 && months > 0) {
+      return `${years} years, ${months} months`
+    }
+    if (years > 0) {
+      return `${years} years`
+    }
+    if (months > 0) {
+      return `${months} months`
+    }
+    return 'N/A'
+  }
+
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="container mx-auto px-4 py-8 bg-secondary text-white">
       <div className="flex justify-between items-center mb-8">
         <h1 className="text-4xl font-bold">Admin Panel</h1>
         <div>
@@ -71,22 +86,22 @@ export default function AdminPage() {
         </div>
       </div>
       <div className="overflow-x-auto">
-        <table className="min-w-full bg-white">
+        <table className="min-w-full bg-gray-800 text-white">
           <thead>
             <tr>
-              <th className="py-2 px-4 border-b">Name</th>
-              <th className="py-2 px-4 border-b">Department</th>
-              <th className="py-2 px-4 border-b">Tenure in GEM</th>
-              <th className="py-2 px-4 border-b">Actions</th>
+              <th className="py-2 px-4 border-b border-gray-700">Name</th>
+              <th className="py-2 px-4 border-b border-gray-700">Department</th>
+              <th className="py-2 px-4 border-b border-gray-700">Tenure</th>
+              <th className="py-2 px-4 border-b border-gray-700">Actions</th>
             </tr>
           </thead>
           <tbody>
             {employees.map((employee) => (
               <tr key={employee.id}>
-                <td className="py-2 px-4 border-b">{employee.name}</td>
-                <td className="py-2 px-4 border-b">{employee.department}</td>
-                <td className="py-2 px-4 border-b">{employee.tenure_in_gem}</td>
-                <td className="py-2 px-4 border-b">
+                <td className="py-2 px-4 border-b border-gray-700">{employee.name}</td>
+                <td className="py-2 px-4 border-b border-gray-700">{employee.department}</td>
+                <td className="py-2 px-4 border-b border-gray-700">{tenureText(employee)}</td>
+                <td className="py-2 px-4 border-b border-gray-700">
                   <Link href={`/admin/edit/${employee.id}`}>
                     <button className="text-primary mr-4">Edit</button>
                   </Link>

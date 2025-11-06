@@ -32,6 +32,21 @@ export default function EmployeePage() {
     return <div>Loading...</div>
   }
 
+  const tenureText = () => {
+    const years = employee.tenure_years || 0
+    const months = employee.tenure_months || 0
+    if (years > 0 && months > 0) {
+      return `${years} years, ${months} months`
+    }
+    if (years > 0) {
+      return `${years} years`
+    }
+    if (months > 0) {
+      return `${months} months`
+    }
+    return 'N/A'
+  }
+
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="border rounded-lg p-8">
@@ -51,7 +66,7 @@ export default function EmployeePage() {
           <div className="ml-8">
             <h1 className="text-4xl font-bold mb-4">{employee.name}</h1>
             <p className="text-xl text-white">Department: {employee.department}</p>
-            <p className="text-xl text-white">Tenure: {employee.tenure_in_gem} years</p>
+            <p className="text-xl text-white">Tenure: {tenureText()}</p>
           </div>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
