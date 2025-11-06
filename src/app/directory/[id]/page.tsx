@@ -50,17 +50,17 @@ export default function EmployeePage() {
           </div>
           <div className="ml-8">
             <h1 className="text-4xl font-bold mb-4">{employee.name}</h1>
-            <p className="text-xl text-gray-600">{employee.department}</p>
-            <p className="text-xl text-gray-600">Tenure: {employee.tenure_in_gem} years</p>
+            <p className="text-xl text-white">Department: {employee.department}</p>
+            <p className="text-xl text-white">Tenure: {employee.tenure_in_gem} years</p>
           </div>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           <div>
-            <h2 className="text-2xl font-bold mb-4">Hobbies</h2>
+            <h2 className="text-2xl font-bold mb-4 bg-primary p-2 rounded">Hobbies</h2>
             <p>{employee.hobbies}</p>
           </div>
           <div>
-            <h2 className="text-2xl font-bold mb-4">Personal Traits</h2>
+            <h2 className="text-2xl font-bold mb-4 bg-primary p-2 rounded">Personal Traits</h2>
             <p>{employee.personal_traits}</p>
           </div>
         </div>
