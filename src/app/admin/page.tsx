@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { supabase } from '@/utils/supabase'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
@@ -20,18 +20,18 @@ export default function AdminPage() {
     checkUser()
   }, [router])
 
-  const fetchEmployees = async () => {
+  const fetchEmployees = useCallback(async () => {
     const { data, error } = await supabase.from('employees').select('*')
     if (error) {
       console.error('Error fetching employees:', error)
     } else {
       setEmployees(data)
     }
-  }
+  }, [])
 
   useEffect(() => {
     fetchEmployees()
-  }, [])
+  }, [fetchEmployees])
 
   const handleDelete = async (id: string) => {
     if (window.confirm('Are you sure you want to delete this employee?')) {
@@ -60,7 +60,7 @@ export default function AdminPage() {
         <h1 className="text-4xl font-bold">Admin Panel</h1>
         <div>
           <Link href="/admin/add">
-            <button className="bg-blue-600 text-white px-4 py-2 rounded mr-4">
+            <button className="bg-primary text-black px-4 py-2 rounded mr-4">
               Add Employee
             </button>
           </Link>
@@ -90,7 +90,7 @@ export default function AdminPage() {
                 <td className="py-2 px-4 border-b">{employee.tenure_in_gem}</td>
                 <td className="py-2 px-4 border-b">
                   <Link href={`/admin/edit/${employee.id}`}>
-                    <button className="text-blue-600 mr-4">Edit</button>
+                    <button className="text-primary mr-4">Edit</button>
                   </Link>
                   <button
                     onClick={() => handleDelete(employee.id)}

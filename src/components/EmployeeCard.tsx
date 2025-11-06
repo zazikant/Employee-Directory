@@ -17,10 +17,10 @@ export default function EmployeeCard({ employee }: { employee: Employee }) {
           />
         </div>
         {/* Back of the card */}
-        <div className="absolute w-full h-full backface-hidden rotate-y-180 bg-gray-800 text-white p-4 rounded-lg flex flex-col justify-center items-center">
+        <div className="absolute w-full h-full backface-hidden rotate-y-180 bg-secondary text-white p-4 rounded-lg flex flex-col justify-center items-center">
           <h2 className="text-xl font-bold">{employee.name}</h2>
-          <p className="text-gray-400">{employee.department}</p>
-          <Link href={`/directory/${employee.id}`} className="mt-4 bg-blue-600 text-white px-4 py-2 rounded">
+          <p className="text-gray-200">{employee.department}</p>
+          <Link href={`/directory/${employee.id}`} className="mt-4 bg-primary text-black px-4 py-2 rounded">
             Preview Profile
           </Link>
         </div>

@@ -45,7 +45,7 @@ export default function LoginPage() {
           />
           <button
             onClick={handleLogin}
-            className="p-2 text-white bg-blue-600 rounded"
+            className="p-2 text-black bg-primary rounded"
           >
             Login
           </button>

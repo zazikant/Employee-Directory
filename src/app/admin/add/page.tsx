@@ -34,7 +34,7 @@ export default function AddEmployeePage() {
       const fileName = `${Math.random()}.${fileExt}`
       const filePath = `${fileName}`
 
-      let { error: uploadError } = await supabase.storage.from('profile-photos').upload(filePath, file)
+      const { error: uploadError } = await supabase.storage.from('profile-photos').upload(filePath, file)
 
       if (uploadError) {
         throw uploadError
@@ -42,8 +42,10 @@ export default function AddEmployeePage() {
 
       const { data: { publicUrl } } = supabase.storage.from('profile-photos').getPublicUrl(filePath)
       setEmployee({ ...employee, photo_url: publicUrl })
-    } catch (error: any) {
-      alert(error.message)
+    } catch (error) {
+      if (error instanceof Error) {
+        alert(error.message)
+      }
     } finally {
       setUploading(false)
     }
@@ -73,7 +75,7 @@ export default function AddEmployeePage() {
         <input name="tenure_in_gem" type="number" placeholder="Tenure in GEM" onChange={handleChange} required className="p-2 border rounded" />
         <input name="department" placeholder="Department" onChange={handleChange} required className="p-2 border rounded" />
         <textarea name="personal_traits" placeholder="Personal Traits" onChange={handleChange} className="p-2 border rounded col-span-2" />
-        <button type="submit" className="p-2 text-white bg-blue-600 rounded col-span-2" disabled={uploading}>
+        <button type="submit" className="p-2 text-black bg-primary rounded col-span-2" disabled={uploading}>
           {uploading ? 'Uploading...' : 'Add Employee'}
         </button>
       </form>

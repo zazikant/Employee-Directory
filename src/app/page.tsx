@@ -13,7 +13,7 @@ export default function Home() {
         </p>
 
         <div className="flex flex-wrap items-center justify-around max-w-4xl mt-6 sm:w-full">
-          <Link href="/directory" className="p-6 mt-6 text-left border w-96 rounded-xl hover:text-blue-600 focus:text-blue-600">
+          <Link href="/directory" className="p-6 mt-6 text-left border w-96 rounded-xl hover:text-primary focus:text-primary">
             <h3 className="text-2xl font-bold">View Directory &rarr;</h3>
             <p className="mt-4 text-xl">
               Find and explore our employee directory.

@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import { supabase } from '@/utils/supabase'
 import { useParams } from 'next/navigation'
 import { Employee } from '@/types'
-// import Image from 'next/image' // Commenting out for debugging
+import Image from 'next/image'
 
 export default function EmployeePage() {
   const { id } = useParams()
@@ -36,13 +36,13 @@ export default function EmployeePage() {
     <div className="container mx-auto px-4 py-8">
       <div className="border rounded-lg p-8">
         <div className="flex items-center mb-8">
-          <div className="w-48 h-48 bg-gray-200 rounded-full overflow-hidden">
+          <div className="w-48 h-48 bg-gray-200 rounded-full overflow-hidden relative">
             {employee.photo_url ? (
-              // Using a standard img tag for debugging
-              <img
+              <Image
                 src={employee.photo_url}
                 alt={employee.name}
-                className="w-full h-full object-cover"
+                layout="fill"
+                objectFit="cover"
               />
             ) : (
               <div className="w-full h-full bg-gray-300" />
