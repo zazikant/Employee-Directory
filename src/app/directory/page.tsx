@@ -61,7 +61,7 @@ export default function DirectoryPage() {
           onChange={(e) => setSearchTerm(e.target.value)}
           className="p-2 mb-8 border rounded w-full"
         />
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-2 justify-items-center">
+        <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-x-0.5 gap-y-2 justify-items-center">
           {filteredEmployees.map((employee) => (
             <EmployeeCard key={employee.id} employee={employee} />
           ))}

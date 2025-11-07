@@ -17,7 +17,7 @@ export default function EmployeeCard({ employee }: { employee: Employee }) {
       <div
         className={`relative w-32 h-32 transform-style-3d transition-transform duration-700 ${
           isFlipped ? 'rotate-y-180' : ''
-        }`}
+        } group-hover:rotate-y-180`}
       >
         {/* Front of the card */}
         <div className="absolute w-full h-full backface-hidden">
