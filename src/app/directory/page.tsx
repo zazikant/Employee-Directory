@@ -6,6 +6,7 @@ import EmployeeCard from '@/components/EmployeeCard'
 import { Employee } from '@/types'
 import Image from 'next/image'
 import Link from 'next/link'
+import EmployeeModal from '@/components/EmployeeModal'
 
 const fuzzyMatch = (searchTerm: string, text: string) => {
   searchTerm = searchTerm.toLowerCase();
@@ -22,6 +23,7 @@ const fuzzyMatch = (searchTerm: string, text: string) => {
 export default function DirectoryPage() {
   const [employees, setEmployees] = useState<Employee[]>([])
   const [searchTerm, setSearchTerm] = useState('')
+  const [selectedEmployee, setSelectedEmployee] = useState<Employee | null>(null)
 
   useEffect(() => {
     const fetchEmployees = async () => {
@@ -61,12 +63,15 @@ export default function DirectoryPage() {
           onChange={(e) => setSearchTerm(e.target.value)}
           className="p-2 mb-8 border rounded w-full"
         />
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-2">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-0">
           {filteredEmployees.map((employee) => (
-            <EmployeeCard key={employee.id} employee={employee} />
+            <EmployeeCard key={employee.id} employee={employee} onCardClick={() => setSelectedEmployee(employee)} />
           ))}
         </div>
       </div>
+      {selectedEmployee && (
+        <EmployeeModal employee={selectedEmployee} onClose={() => setSelectedEmployee(null)} />
+      )}
     </div>
   )
 }

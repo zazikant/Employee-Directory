@@ -6,6 +6,7 @@ import { useParams, useRouter } from 'next/navigation'
 import { Employee } from '@/types'
 import Image from 'next/image'
 import EmployeeCard from '@/components/EmployeeCard'
+import EmployeeModal from '@/components/EmployeeModal'
 
 const fuzzyMatch = (searchTerm: string, text: string) => {
   searchTerm = searchTerm.toLowerCase();
@@ -25,6 +26,7 @@ export default function EmployeePage() {
   const [employee, setEmployee] = useState<Employee | null>(null)
   const [allEmployees, setAllEmployees] = useState<Employee[]>([])
   const [searchTerm, setSearchTerm] = useState('')
+  const [selectedEmployee, setSelectedEmployee] = useState<Employee | null>(null)
 
   useEffect(() => {
     const fetchEmployees = async () => {
@@ -113,9 +115,12 @@ export default function EmployeePage() {
       />
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-2">
         {otherEmployees.map((emp) => (
-          <EmployeeCard key={emp.id} employee={emp} />
+          <EmployeeCard key={emp.id} employee={emp} onCardClick={() => setSelectedEmployee(emp)} />
         ))}
       </div>
+      {selectedEmployee && (
+        <EmployeeModal employee={selectedEmployee} onClose={() => setSelectedEmployee(null)} />
+      )}
     </div>
   )
 }
