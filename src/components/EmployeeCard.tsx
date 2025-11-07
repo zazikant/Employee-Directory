@@ -13,11 +13,11 @@ export default function EmployeeCard({ employee }: { employee: Employee }) {
   }
 
   return (
-    <div className="group perspective-1000" onClick={handleFlip}>
+    <div className="relative group perspective-1000 md:hover:z-50" onClick={handleFlip}>
       <div
-        className={`relative w-32 h-32 transform-style-3d transition-transform duration-700 ${
+        className={`relative w-36 h-36 transform-style-3d transition-transform duration-700 ${
           isFlipped ? 'rotate-y-180' : ''
-        } md:group-hover:rotate-y-180 md:group-hover:scale-200 md:group-hover:z-50`}
+        } md:group-hover:rotate-y-180 md:group-hover:scale-200`}
       >
         {/* Front of the card */}
         <div className="absolute w-full h-full backface-hidden">
@@ -31,9 +31,9 @@ export default function EmployeeCard({ employee }: { employee: Employee }) {
         </div>
         {/* Back of the card */}
         <div className="absolute w-full h-full backface-hidden rotate-y-180 bg-secondary text-white p-4 rounded-lg flex flex-col justify-center items-center">
-          <h2 className="text-base font-bold">{employee.name}</h2>
-          <p className="text-xs text-gray-200">{employee.department}</p>
-          <Link href={`/directory/${employee.id}`} className="mt-2 bg-primary text-black px-3 py-1 rounded text-sm">
+          <h2 className="text-xs font-bold">{employee.name}</h2>
+          <p className="text-[10px] text-gray-200">{employee.department}</p>
+          <Link href={`/directory/${employee.id}`} className="mt-2 bg-primary text-black px-3 py-1 rounded text-xs">
             Preview Profile
           </Link>
         </div>
