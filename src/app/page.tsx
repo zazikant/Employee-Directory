@@ -21,7 +21,7 @@ export default function Home() {
       </p>
 
       <div className="my-12">
-        <Link href="/directory" className="px-8 py-4 bg-[#2D3D06] text-white rounded-lg text-xl font-semibold hover:bg-opacity-90 transition-colors">
+        <Link href="/directory" className="px-8 py-4 bg-primary text-black rounded-lg text-xl font-semibold hover:bg-opacity-90 transition-colors">
           Click to view all employees
         </Link>
       </div>
