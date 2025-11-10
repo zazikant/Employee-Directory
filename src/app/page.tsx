@@ -12,48 +12,44 @@ export default function Home() {
           height={40}
         />
       </div>
-      <h1 className="text-4xl sm:text-6xl font-bold max-w-4xl text-secondary">
+      <h1 className="text-4xl sm:text-6xl font-bold max-w-4xl text-black">
         GEM Engserv&apos;s Official Employee Directory
       </h1>
 
-      <p className="mt-4 text-lg sm:text-2xl max-w-3xl text-gray-600">
+      <p className="mt-4 text-lg sm:text-2xl max-w-3xl text-gray-500 font-medium">
         This website is the official employee data of GEM Engserv. We value their contribution in taking GEM to a new height.
       </p>
 
       <div className="my-12">
-        <Link href="/directory" className="px-8 py-4 bg-secondary text-white rounded-lg text-xl font-semibold hover:bg-opacity-90 transition-colors">
+        <Link href="/directory" className="px-8 py-4 bg-[#2D3D06] text-white rounded-lg text-xl font-semibold hover:bg-opacity-90 transition-colors">
           Click to view all employees
         </Link>
       </div>
 
-      <div className="bg-gray-50 p-8 rounded-lg shadow-inner max-w-4xl w-full">
-        <h2 className="text-3xl font-bold mb-8 text-center text-secondary">Our Values</h2>
-        <div className="grid md:grid-cols-2 gap-x-12 gap-y-6">
-          <ul className="space-y-4 text-left">
-            <li className="flex items-center text-lg">
-              <svg className="w-6 h-6 text-primary mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path></svg>
-              <span>Customer Focus</span>
-            </li>
-            <li className="flex items-center text-lg">
-              <svg className="w-6 h-6 text-primary mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path></svg>
-              <span>Ownership</span>
-            </li>
-            <li className="flex items-center text-lg">
-              <svg className="w-6 h-6 text-primary mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path></svg>
-              <span>Integrity</span>
-            </li>
-          </ul>
-          <ul className="space-y-4 text-left">
-            <li className="flex items-center text-lg">
-              <svg className="w-6 h-6 text-primary mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path></svg>
-              <span>Value Creation Through Competence</span>
-            </li>
-            <li className="flex items-center text-lg">
-              <svg className="w-6 h-6 text-primary mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path></svg>
-              <span>Respect for Individual</span>
-            </li>
-          </ul>
-        </div>
+      <div className="bg-white p-8 rounded-lg shadow-lg max-w-md w-full">
+        <h2 className="text-2xl font-medium mb-6 text-center text-black">Our Values</h2>
+        <ul className="space-y-3 text-left">
+          <li className="flex items-center">
+            <svg className="w-6 h-6 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path></svg>
+            <span className="font-medium">Customer Focus</span>
+          </li>
+          <li className="flex items-center">
+            <svg className="w-6 h-6 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path></svg>
+            <span className="font-medium">Ownership</span>
+          </li>
+          <li className="flex items-center">
+            <svg className="w-6 h-6 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path></svg>
+            <span className="font-medium">Integrity</span>
+          </li>
+          <li className="flex items-center">
+            <svg className="w-6 h-6 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path></svg>
+            <span className="font-medium">Value Creation Through Competence</span>
+          </li>
+          <li className="flex items-center">
+            <svg className="w-6 h-6 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path></svg>
+            <span className="font-medium">Respect for Individual</span>
+          </li>
+        </ul>
       </div>
     </div>
   )
