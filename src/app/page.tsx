@@ -16,7 +16,7 @@ export default function Home() {
         GEM Engserv&apos;s Official Employee Directory
       </h1>
 
-      <p className="mt-4 text-lg sm:text-2xl max-w-3xl text-gray-500 font-medium">
+      <p className="mt-4 text-lg sm:text-2xl max-w-3xl text-gray-600 font-medium">
         This website is the official employee data of GEM Engserv. We value their contribution in taking GEM to a new height.
       </p>
 
@@ -31,23 +31,23 @@ export default function Home() {
         <ul className="space-y-3 text-left">
           <li className="flex items-center">
             <svg className="w-6 h-6 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path></svg>
-            <span className="font-medium">Customer Focus</span>
+            <span className="font-medium text-black">Customer Focus</span>
           </li>
           <li className="flex items-center">
             <svg className="w-6 h-6 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path></svg>
-            <span className="font-medium">Ownership</span>
+            <span className="font-medium text-black">Ownership</span>
           </li>
           <li className="flex items-center">
             <svg className="w-6 h-6 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path></svg>
-            <span className="font-medium">Integrity</span>
+            <span className="font-medium text-black">Integrity</span>
           </li>
           <li className="flex items-center">
             <svg className="w-6 h-6 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path></svg>
-            <span className="font-medium">Value Creation Through Competence</span>
+            <span className="font-medium text-black">Value Creation Through Competence</span>
           </li>
           <li className="flex items-center">
             <svg className="w-6 h-6 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path></svg>
-            <span className="font-medium">Respect for Individual</span>
+            <span className="font-medium text-black">Respect for Individual</span>
           </li>
         </ul>
       </div>
