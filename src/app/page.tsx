@@ -1,10 +1,14 @@
 import Link from 'next/link';
 import Image from 'next/image';
+import Header from '@/components/Header';
+import Footer from '@/components/Footer';
 
 export default function Home() {
   return (
-    <div className="bg-white">
-      <div className="flex flex-col items-center justify-center w-full flex-1 px-4 sm:px-20 text-center py-12">
+    <>
+      <Header />
+      <div className="bg-white">
+        <div className="flex flex-col items-center justify-center w-full flex-1 px-4 sm:px-20 text-center py-12">
         <div className="mb-8">
           <Image
             src="https://gemengserv.com/wp-content/uploads/2021/04/GEM-Engserv-Pvt-Ltd-logo-updated.png"
@@ -55,5 +59,7 @@ export default function Home() {
         </div>
       </div>
     </div>
+    <Footer />
+    </>
   )
 }
