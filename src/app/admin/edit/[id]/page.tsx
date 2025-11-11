@@ -55,8 +55,8 @@ export default function EditEmployeePage() {
         <input name="photo_url" placeholder="Photo URL" value={employee.photo_url} onChange={handleChange} className="p-2 border rounded col-span-2" />
         <input name="name" placeholder="Name" value={employee.name} onChange={handleChange} required className="p-2 border rounded" />
         <input name="hobbies" placeholder="Hobbies" value={employee.hobbies} onChange={handleChange} required className="p-2 border rounded" />
-        <input name="tenure_years" type="number" placeholder="Tenure (Years)" value={employee.tenure_years} onChange={handleChange} required className="p-2 border rounded" />
-        <input name="tenure_months" type="number" placeholder="Tenure (Months)" value={employee.tenure_months} onChange={handleChange} className="p-2 border rounded" />
+        <input name="tenure_years" type="number" placeholder="Tenure (Years)" value={employee.tenure_years} onChange={handleChange} required min="0" className="p-2 border rounded" />
+        <input name="tenure_months" type="number" placeholder="Tenure (Months)" value={employee.tenure_months} onChange={handleChange} min="0" max="12" className="p-2 border rounded" />
         <input name="department" placeholder="Department" value={employee.department} onChange={handleChange} required className="p-2 border rounded" />
         <textarea name="personal_traits" placeholder="Personal Traits" value={employee.personal_traits} onChange={handleChange} className="p-2 border rounded col-span-2" />
         <button type="submit" className="p-2 text-black bg-primary rounded col-span-2">

@@ -84,7 +84,12 @@ export default function AddEmployeePage() {
                 for (const key in csvEmployee) {
                   const value = csvEmployee[key as keyof typeof csvEmployee]
                   if (value !== undefined && value !== null && value !== '') {
-                    (mergedData as Record<string, unknown>)[key] = value
+                    // Cap tenure_months at 12
+                    if (key === 'tenure_months' && Number(value) > 12) {
+                      (mergedData as Record<string, unknown>)[key] = 12
+                    } else {
+                      (mergedData as Record<string, unknown>)[key] = value
+                    }
                   }
                 }
                 
@@ -108,9 +113,21 @@ export default function AddEmployeePage() {
                   continue
                 }
 
+                // Prepare record with defaults for missing fields
+                const tenureMonths = csvEmployee.tenure_months || 0
+                const newEmployee = {
+                  name: csvEmployee.name,
+                  photo_url: csvEmployee.photo_url,
+                  hobbies: csvEmployee.hobbies || '',
+                  tenure_years: csvEmployee.tenure_years || 0,
+                  tenure_months: Number(tenureMonths) > 12 ? 12 : Number(tenureMonths),
+                  department: csvEmployee.department || '',
+                  personal_traits: csvEmployee.personal_traits || '',
+                }
+
                 const { error: insertError } = await supabase
                   .from('employees')
-                  .insert([csvEmployee])
+                  .insert([newEmployee])
 
                 if (insertError) {
                   failed++
@@ -158,8 +175,8 @@ export default function AddEmployeePage() {
             <input name="photo_url" placeholder="Photo URL" onChange={handleChange} className="p-2 border rounded" />
             <input name="name" placeholder="Name" onChange={handleChange} required className="p-2 border rounded" />
             <input name="hobbies" placeholder="Hobbies" onChange={handleChange} required className="p-2 border rounded" />
-            <input name="tenure_years" type="number" placeholder="Tenure (Years)" onChange={handleChange} required className="p-2 border rounded" />
-            <input name="tenure_months" type="number" placeholder="Tenure (Months)" onChange={handleChange} className="p-2 border rounded" />
+            <input name="tenure_years" type="number" placeholder="Tenure (Years)" onChange={handleChange} required min="0" className="p-2 border rounded" />
+            <input name="tenure_months" type="number" placeholder="Tenure (Months)" onChange={handleChange} min="0" max="12" className="p-2 border rounded" />
             <input name="department" placeholder="Department" onChange={handleChange} required className="p-2 border rounded" />
             <textarea name="personal_traits" placeholder="Personal Traits" onChange={handleChange} className="p-2 border rounded" />
             <button type="submit" className="p-2 text-black bg-primary rounded">
