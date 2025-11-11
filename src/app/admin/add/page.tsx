@@ -7,11 +7,11 @@ import { Employee } from '@/types'
 
 export default function AddEmployeePage() {
   const router = useRouter()
-  const [employee, setEmployee] = useState<Omit<Employee, 'id'>>({
+  const [employee, setEmployee] = useState({
     name: '',
     hobbies: '',
-    tenure_years: 0,
-    tenure_months: 0,
+    tenure_years: '',
+    tenure_months: '',
     department: '',
     personal_traits: '',
     photo_url: '',
@@ -25,7 +25,21 @@ export default function AddEmployeePage() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    const { error } = await supabase.from('employees').insert([employee])
+    
+    // Prepare employee data with defaults for empty fields
+    const tenureYears = employee.tenure_years ? Number(employee.tenure_years) : 0
+    const tenureMonths = employee.tenure_months ? Number(employee.tenure_months) : 0
+    const employeeData = {
+      name: employee.name.trim(),
+      photo_url: employee.photo_url.trim(),
+      hobbies: employee.hobbies.trim() || '',
+      tenure_years: tenureYears,
+      tenure_months: tenureMonths > 12 ? 12 : tenureMonths,
+      department: employee.department.trim() || '',
+      personal_traits: employee.personal_traits.trim() || '',
+    }
+    
+    const { error } = await supabase.from('employees').insert([employeeData])
     if (error) {
       alert(error.message)
     } else {
@@ -172,13 +186,14 @@ export default function AddEmployeePage() {
         <div>
           <h1 className="text-4xl font-bold mb-8">Add Employee</h1>
           <form onSubmit={handleSubmit} className="grid grid-cols-1 gap-4">
-            <input name="photo_url" placeholder="Photo URL" onChange={handleChange} className="p-2 border rounded" />
-            <input name="name" placeholder="Name" onChange={handleChange} required className="p-2 border rounded" />
-            <input name="hobbies" placeholder="Hobbies" onChange={handleChange} required className="p-2 border rounded" />
-            <input name="tenure_years" type="number" placeholder="Tenure (Years)" onChange={handleChange} required min="0" className="p-2 border rounded" />
-            <input name="tenure_months" type="number" placeholder="Tenure (Months)" onChange={handleChange} min="0" max="12" className="p-2 border rounded" />
-            <input name="department" placeholder="Department" onChange={handleChange} required className="p-2 border rounded" />
-            <textarea name="personal_traits" placeholder="Personal Traits" onChange={handleChange} className="p-2 border rounded" />
+            <input name="name" placeholder="Name *" onChange={handleChange} required className="p-2 border rounded" />
+            <input name="photo_url" placeholder="Photo URL *" onChange={handleChange} required className="p-2 border rounded" />
+            <input name="hobbies" placeholder="Hobbies (optional)" onChange={handleChange} className="p-2 border rounded" />
+            <input name="tenure_years" type="number" placeholder="Tenure (Years) - optional" onChange={handleChange} min="0" className="p-2 border rounded" />
+            <input name="tenure_months" type="number" placeholder="Tenure (Months) - optional" onChange={handleChange} min="0" max="12" className="p-2 border rounded" />
+            <input name="department" placeholder="Department (optional)" onChange={handleChange} className="p-2 border rounded" />
+            <textarea name="personal_traits" placeholder="Personal Traits (optional)" onChange={handleChange} className="p-2 border rounded" />
+            <p className="text-sm text-gray-600">* Required fields</p>
             <button type="submit" className="p-2 text-black bg-primary rounded">
               Add Employee
             </button>
