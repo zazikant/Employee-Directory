@@ -6,9 +6,24 @@ import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { Employee } from '@/types'
 
+const fuzzyMatch = (searchTerm: string, text: string) => {
+  searchTerm = searchTerm.toLowerCase();
+  text = text.toLowerCase();
+  let searchIndex = 0;
+  for (let i = 0; i < text.length && searchIndex < searchTerm.length; i++) {
+    if (searchTerm[searchIndex] === text[i]) {
+      searchIndex++;
+    }
+  }
+  return searchIndex === searchTerm.length;
+};
+
 export default function AdminPage() {
   const [employees, setEmployees] = useState<Employee[]>([])
+  const [searchTerm, setSearchTerm] = useState('')
+  const [currentPage, setCurrentPage] = useState(1)
   const router = useRouter()
+  const recordsPerPage = 20
 
   const fetchEmployees = useCallback(async () => {
     const { data, error } = await supabase.from('employees').select('*')
@@ -67,6 +82,24 @@ export default function AdminPage() {
     return 'N/A'
   }
 
+  // Filter employees by search term
+  const filteredEmployees = employees.filter((employee) => {
+    if (!searchTerm) return true
+    return fuzzyMatch(searchTerm, employee.name)
+  })
+
+  // Calculate pagination
+  const totalPages = Math.ceil(filteredEmployees.length / recordsPerPage)
+  const startIndex = (currentPage - 1) * recordsPerPage
+  const endIndex = startIndex + recordsPerPage
+  const paginatedEmployees = filteredEmployees.slice(startIndex, endIndex)
+
+  const handlePageChange = (newPage: number) => {
+    if (newPage >= 1 && newPage <= totalPages) {
+      setCurrentPage(newPage)
+    }
+  }
+
   return (
     <div className="container mx-auto px-4 py-8 bg-secondary text-white">
       <div className="flex justify-between items-center mb-8">
@@ -85,6 +118,27 @@ export default function AdminPage() {
           </button>
         </div>
       </div>
+
+      {/* Search Bar */}
+      <div className="mb-4">
+        <input
+          type="text"
+          placeholder="Search employees by name..."
+          value={searchTerm}
+          onChange={(e) => {
+            setSearchTerm(e.target.value)
+            setCurrentPage(1)
+          }}
+          className="p-2 border rounded w-full text-black"
+        />
+      </div>
+
+      {/* Results Count */}
+      <div className="mb-4 text-sm text-gray-300">
+        Showing {startIndex + 1}-{Math.min(endIndex, filteredEmployees.length)} of {filteredEmployees.length} employees
+        {searchTerm && ` (filtered from ${employees.length} total)`}
+      </div>
+
       <div className="overflow-x-auto">
         <table className="min-w-full bg-gray-800 text-white">
           <thead>
@@ -96,7 +150,7 @@ export default function AdminPage() {
             </tr>
           </thead>
           <tbody>
-            {employees.map((employee) => (
+            {paginatedEmployees.map((employee) => (
               <tr key={employee.id}>
                 <td className="py-2 px-4 border-b border-gray-700">{employee.name}</td>
                 <td className="py-2 px-4 border-b border-gray-700">{employee.department}</td>
@@ -117,6 +171,37 @@ export default function AdminPage() {
           </tbody>
         </table>
       </div>
+
+      {/* Pagination Controls */}
+      {totalPages > 1 && (
+        <div className="flex justify-center items-center gap-4 mt-6">
+          <button
+            onClick={() => handlePageChange(currentPage - 1)}
+            disabled={currentPage === 1}
+            className={`px-4 py-2 rounded ${
+              currentPage === 1
+                ? 'bg-gray-600 text-gray-400 cursor-not-allowed'
+                : 'bg-primary text-black hover:bg-opacity-90'
+            }`}
+          >
+            Previous
+          </button>
+          <span className="text-white">
+            Page {currentPage} of {totalPages}
+          </span>
+          <button
+            onClick={() => handlePageChange(currentPage + 1)}
+            disabled={currentPage === totalPages}
+            className={`px-4 py-2 rounded ${
+              currentPage === totalPages
+                ? 'bg-gray-600 text-gray-400 cursor-not-allowed'
+                : 'bg-primary text-black hover:bg-opacity-90'
+            }`}
+          >
+            Next
+          </button>
+        </div>
+      )}
     </div>
   )
 }

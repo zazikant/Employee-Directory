@@ -42,7 +42,7 @@ export default function AddEmployeePage() {
         skipEmptyLines: true,
         complete: async (results) => {
           const employees = results.data as Employee[]
-          const { error } = await supabase.from('employees').upsert(employees, { onConflict: 'name,photo_url' })
+          const { error } = await supabase.from('employees').upsert(employees, { onConflict: 'name' })
           if (error) {
             alert(error.message)
           } else {
