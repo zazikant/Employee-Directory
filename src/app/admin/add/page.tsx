@@ -51,31 +51,41 @@ export default function AddEmployeePage() {
 
           for (const csvEmployee of csvEmployees) {
             try {
-              if (!csvEmployee.name) {
+              if (!csvEmployee.name || !csvEmployee.name.trim()) {
                 failed++
                 errors.push('Skipped record with missing name')
                 continue
               }
 
-              // Check if employee with this name exists
-              const { data: existingEmployees, error: fetchError } = await supabase
+              // Normalize name for case-insensitive matching
+              const normalizedCsvName = csvEmployee.name.trim().toLowerCase()
+
+              // Fetch all employees and do case-insensitive match client-side
+              const { data: allEmployees, error: fetchError } = await supabase
                 .from('employees')
                 .select('*')
-                .eq('name', csvEmployee.name)
-                .limit(1)
 
               if (fetchError) {
                 failed++
-                errors.push(`Error fetching ${csvEmployee.name}: ${fetchError.message}`)
+                errors.push(`Error fetching employees: ${fetchError.message}`)
                 continue
               }
 
-              if (existingEmployees && existingEmployees.length > 0) {
-                // Employee exists - update with CSV data (CSV values override existing)
-                const existingEmployee = existingEmployees[0]
-                const mergedData = {
-                  ...existingEmployee,
-                  ...csvEmployee,
+              // Find matching employee (case-insensitive)
+              const existingEmployee = allEmployees?.find(
+                emp => emp.name.trim().toLowerCase() === normalizedCsvName
+              )
+
+              if (existingEmployee) {
+                // Employee exists - merge only non-empty CSV fields
+                const mergedData = { ...existingEmployee }
+                
+                // Only update fields that have non-empty values in CSV
+                for (const key in csvEmployee) {
+                  const value = csvEmployee[key as keyof typeof csvEmployee]
+                  if (value !== undefined && value !== null && value !== '') {
+                    (mergedData as Record<string, unknown>)[key] = value
+                  }
                 }
                 
                 const { error: updateError } = await supabase
@@ -91,6 +101,13 @@ export default function AddEmployeePage() {
                 }
               } else {
                 // Employee doesn't exist - insert new record
+                // Require photo_url for new records
+                if (!csvEmployee.photo_url || !csvEmployee.photo_url.trim()) {
+                  failed++
+                  errors.push(`Skipped ${csvEmployee.name}: photo_url is required for new employees`)
+                  continue
+                }
+
                 const { error: insertError } = await supabase
                   .from('employees')
                   .insert([csvEmployee])
@@ -153,10 +170,16 @@ export default function AddEmployeePage() {
         <div>
           <h1 className="text-4xl font-bold mb-8">Bulk Upload</h1>
           <div className="border rounded p-4">
-            <p className="mb-4">Upload a CSV file with the following headers: name, hobbies, tenure_years, tenure_months, department, personal_traits, photo_url</p>
-            <p className="mb-4 text-sm text-gray-600">
-              <strong>Note:</strong> If an employee name already exists, their record will be updated with new CSV values. Otherwise, a new employee will be added.
-            </p>
+            <p className="mb-4"><strong>CSV Headers:</strong> name, hobbies, tenure_years, tenure_months, department, personal_traits, photo_url</p>
+            <div className="mb-4 text-sm text-gray-600 bg-gray-50 p-3 rounded">
+              <strong>How it works:</strong>
+              <ul className="list-disc ml-5 mt-2 space-y-1">
+                <li><strong>Name matching is case-insensitive</strong> (e.g., &quot;vIn diEsel&quot; = &quot;Vin Diesel&quot;)</li>
+                <li><strong>Updating:</strong> If name exists, only non-empty CSV fields will update. Existing data is preserved for empty CSV fields.</li>
+                <li><strong>Inserting:</strong> New employees require a photo_url. Other fields can be blank.</li>
+                <li><strong>Partial updates allowed:</strong> You can update just 1 or 2 fields for existing employees.</li>
+              </ul>
+            </div>
             <input 
               type="file" 
               accept=".csv" 
