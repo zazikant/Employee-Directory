@@ -23,25 +23,78 @@ export default function EmployeePage() {
   const { id } = useParams()
   const router = useRouter()
   const [employee, setEmployee] = useState<Employee | null>(null)
-  const [allEmployees, setAllEmployees] = useState<Employee[]>([])
+  const [otherEmployees, setOtherEmployees] = useState<Employee[]>([])
+  const [totalOthers, setTotalOthers] = useState(0)
   const [searchTerm, setSearchTerm] = useState('')
+  const [currentPage, setCurrentPage] = useState(1)
+  const [isSearching, setIsSearching] = useState(false)
+  const employeesPerPage = 80
 
   useEffect(() => {
-    const fetchEmployees = async () => {
-      const { data, error } = await supabase.from('employees').select('*')
+    const fetchCurrentEmployee = async () => {
+      const { data, error } = await supabase
+        .from('employees')
+        .select('*')
+        .eq('id', id)
+        .single()
+      
       if (error) {
-        console.error('Error fetching employees:', error)
+        console.error('Error fetching employee:', error)
       } else {
-        setAllEmployees(data)
-        const currentEmployee = data.find((emp) => emp.id === id)
-        setEmployee(currentEmployee || null)
+        setEmployee(data)
       }
     }
-    fetchEmployees()
+    fetchCurrentEmployee()
   }, [id])
 
+  useEffect(() => {
+    const fetchOtherEmployees = async () => {
+      if (searchTerm) {
+        setIsSearching(true)
+        const { data, error } = await supabase
+          .from('employees')
+          .select('*')
+          .neq('id', id)
+        
+        if (error) {
+          console.error('Error fetching employees:', error)
+        } else {
+          setOtherEmployees(data || [])
+          setTotalOthers(data?.length || 0)
+        }
+      } else {
+        setIsSearching(false)
+        const startIndex = (currentPage - 1) * employeesPerPage
+        const endIndex = startIndex + employeesPerPage - 1
+
+        const { count } = await supabase
+          .from('employees')
+          .select('*', { count: 'exact', head: true })
+          .neq('id', id)
+
+        const { data, error } = await supabase
+          .from('employees')
+          .select('*')
+          .neq('id', id)
+          .range(startIndex, endIndex)
+          .order('name')
+
+        if (error) {
+          console.error('Error fetching employees:', error)
+        } else {
+          setOtherEmployees(data || [])
+          setTotalOthers(count || 0)
+        }
+      }
+    }
+    
+    if (employee) {
+      fetchOtherEmployees()
+    }
+  }, [id, employee, currentPage, searchTerm])
+
   if (!employee) {
-    return <div>Loading...</div>
+    return <div className="container mx-auto px-4 py-8 text-center">Loading...</div>
   }
 
   const tenureText = () => {
@@ -59,9 +112,32 @@ export default function EmployeePage() {
     return 'N/A'
   }
 
-  const otherEmployees = allEmployees.filter(
-    (emp) => emp.id !== id && fuzzyMatch(searchTerm, `${emp.name} ${emp.department}`)
-  )
+  const filteredOtherEmployees = isSearching
+    ? otherEmployees.filter((emp) => 
+        fuzzyMatch(searchTerm, `${emp.name} ${emp.department}`)
+      )
+    : otherEmployees
+
+  const totalPages = isSearching 
+    ? 1 
+    : Math.ceil(totalOthers / employeesPerPage)
+
+  const handlePageChange = (newPage: number) => {
+    if (newPage >= 1 && newPage <= totalPages) {
+      setCurrentPage(newPage)
+      window.scrollTo({ top: document.getElementById('other-employees')?.offsetTop || 0, behavior: 'smooth' })
+    }
+  }
+
+  const handleSearchChange = (value: string) => {
+    setSearchTerm(value)
+    setCurrentPage(1)
+  }
+
+  const startIndex = isSearching ? 0 : (currentPage - 1) * employeesPerPage
+  const endIndex = isSearching 
+    ? filteredOtherEmployees.length 
+    : Math.min(startIndex + employeesPerPage, totalOthers)
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -103,18 +179,88 @@ export default function EmployeePage() {
         </div>
       </div>
 
-      <h2 className="text-3xl font-bold mb-4">Other Employees</h2>
-      <input
-        type="text"
-        placeholder="Search other employees..."
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-        className="p-2 mb-8 border rounded w-full"
-      />
-      <div className="flex flex-wrap justify-center gap-0.5">
-        {otherEmployees.map((emp) => (
-          <EmployeeCard key={emp.id} employee={emp} />
-        ))}
+      <div id="other-employees">
+        <h2 className="text-3xl font-bold mb-4">Other Employees</h2>
+        <input
+          type="text"
+          placeholder="Search other employees..."
+          value={searchTerm}
+          onChange={(e) => handleSearchChange(e.target.value)}
+          className="p-2 mb-4 border rounded w-full text-black"
+        />
+        
+        {/* Results count */}
+        <div className="mb-6 text-sm text-gray-300">
+          {isSearching ? (
+            <span>Found {filteredOtherEmployees.length} matching employees</span>
+          ) : (
+            <span>Showing {startIndex + 1}-{endIndex} of {totalOthers} employees</span>
+          )}
+        </div>
+
+        <div className="flex flex-wrap justify-center gap-0.5">
+          {filteredOtherEmployees.map((emp) => (
+            <EmployeeCard key={emp.id} employee={emp} />
+          ))}
+        </div>
+
+        {/* Pagination - only show when not searching */}
+        {!isSearching && totalPages > 1 && (
+          <div className="flex justify-center items-center gap-4 mt-8">
+            <button
+              onClick={() => handlePageChange(currentPage - 1)}
+              disabled={currentPage === 1}
+              className={`px-4 py-2 rounded ${
+                currentPage === 1
+                  ? 'bg-gray-600 text-gray-400 cursor-not-allowed'
+                  : 'bg-primary text-black hover:bg-opacity-90'
+              }`}
+            >
+              Previous
+            </button>
+            
+            <div className="flex gap-2">
+              {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
+                let pageNum;
+                if (totalPages <= 5) {
+                  pageNum = i + 1;
+                } else if (currentPage <= 3) {
+                  pageNum = i + 1;
+                } else if (currentPage >= totalPages - 2) {
+                  pageNum = totalPages - 4 + i;
+                } else {
+                  pageNum = currentPage - 2 + i;
+                }
+                
+                return (
+                  <button
+                    key={pageNum}
+                    onClick={() => handlePageChange(pageNum)}
+                    className={`px-3 py-2 rounded ${
+                      currentPage === pageNum
+                        ? 'bg-primary text-black font-bold'
+                        : 'bg-gray-700 text-white hover:bg-gray-600'
+                    }`}
+                  >
+                    {pageNum}
+                  </button>
+                );
+              })}
+            </div>
+
+            <button
+              onClick={() => handlePageChange(currentPage + 1)}
+              disabled={currentPage === totalPages}
+              className={`px-4 py-2 rounded ${
+                currentPage === totalPages
+                  ? 'bg-gray-600 text-gray-400 cursor-not-allowed'
+                  : 'bg-primary text-black hover:bg-opacity-90'
+              }`}
+            >
+              Next
+            </button>
+          </div>
+        )}
       </div>
     </div>
   )
