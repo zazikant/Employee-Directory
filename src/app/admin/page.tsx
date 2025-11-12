@@ -129,7 +129,7 @@ export default function AdminPage() {
             setSearchTerm(e.target.value)
             setCurrentPage(1)
           }}
-          className="p-2 border rounded w-full text-black"
+          className="p-2 border-2 border-primary rounded w-full text-white placeholder-gray-300 bg-transparent"
         />
       </div>
 

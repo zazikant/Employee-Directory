@@ -107,7 +107,7 @@ function DirectoryContent() {
           placeholder="Search employees..."
           value={searchTerm}
           onChange={(e) => handleSearchChange(e.target.value)}
-          className="p-2 mb-4 border rounded w-full text-black"
+          className="p-2 mb-4 border-2 border-primary rounded w-full text-white placeholder-gray-300 bg-transparent"
         />
         
         {/* Results count */}

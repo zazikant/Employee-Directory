@@ -148,8 +148,8 @@ export default function EmployeePage() {
         &larr; Go back to Directory
       </button>
       <div className="border rounded-lg p-8 mb-8">
-        <div className="flex items-center mb-8">
-          <div className="w-48 h-48 bg-gray-200 rounded-full overflow-hidden relative">
+        <div className="flex flex-col md:flex-row md:items-center mb-8">
+          <div className="w-full md:w-48 h-48 bg-gray-200 rounded-full overflow-hidden relative mx-auto md:mx-0 mb-6 md:mb-0">
             {employee.photo_url ? (
               <Image
                 src={employee.photo_url}
@@ -161,7 +161,7 @@ export default function EmployeePage() {
               <div className="w-full h-full bg-gray-300" />
             )}
           </div>
-          <div className="ml-8">
+          <div className="md:ml-8 text-center md:text-left">
             <h1 className="text-4xl font-bold mb-4">{employee.name}</h1>
             <p className="text-xl text-white">Department: {employee.department}</p>
             <p className="text-xl text-white">Tenure: {tenureText()}</p>
@@ -186,7 +186,7 @@ export default function EmployeePage() {
           placeholder="Search other employees..."
           value={searchTerm}
           onChange={(e) => handleSearchChange(e.target.value)}
-          className="p-2 mb-4 border rounded w-full text-black"
+          className="p-2 mb-4 border-2 border-primary rounded w-full text-white placeholder-gray-300 bg-transparent"
         />
         
         {/* Results count */}
